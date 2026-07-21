@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>玩豆豆手創館・會員專區</title>
+<script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+<style>
+  :root{
+    --orange:#FF6B35; --pink:#FF7EB0; --cream:#FFF6EA; --card:#FFFFFF;
+    --ink:#3D3330; --muted:#9A8E86; --line:#EFE4D6;
+    --green:#3BB273; --amber:#E8A020; --red:#E4572E; --blue:#3AA0DE;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{
+    margin:0;background:var(--cream);color:var(--ink);
+    font-family:-apple-system,"PingFang TC","Noto Sans TC","Microsoft JhengHei",sans-serif;
+    padding:env(safe-area-inset-top) 16px calc(24px + env(safe-area-inset-bottom));
+    min-height:100vh;
+  }
+  .wrap{max-width:440px;margin:0 auto}
+  header{text-align:center;padding:24px 0 10px}
+  header .shop{font-size:15px;color:var(--muted);letter-spacing:1px}
+  header .title{font-size:24px;font-weight:800;margin-top:2px}
+  header .bar{width:52px;height:5px;border-radius:3px;background:var(--orange);margin:12px auto 0}
+  .card{background:var(--card);border-radius:22px;padding:22px;
+    box-shadow:0 10px 30px rgba(210,150,90,.16);border:1px solid var(--line);margin-top:16px}
+  .center{text-align:center}
+  .spin{width:34px;height:34px;border:4px solid #F0E6D8;border-top-color:var(--orange);
+    border-radius:50%;animation:s .8s linear infinite;margin:10px auto}
+  @keyframes s{to{transform:rotate(360deg)}}
+  label{display:block;font-size:14px;font-weight:700;margin:14px 0 6px}
+  input{width:100%;border:1.5px solid var(--line);background:#FFFDFA;border-radius:14px;
+    padding:14px 16px;font-size:17px;color:var(--ink);outline:none}
+  input:focus{border-color:var(--orange)}
+  button.primary{width:100%;border:0;background:var(--orange);color:#fff;font-size:18px;
+    font-weight:800;border-radius:16px;padding:16px;margin-top:20px;cursor:pointer}
+  button.primary:disabled{opacity:.55}
+  .hint{font-size:14px;color:var(--muted);line-height:1.7;margin-top:6px}
+  .err{background:#FDECE7;color:var(--red);font-weight:700;font-size:14px;
+    border-radius:12px;padding:12px 14px;margin-top:14px}
+  .name{font-size:26px;font-weight:800}
+  .mid{font-size:15px;font-weight:700;color:var(--orange);margin-top:2px}
+  .badge{display:inline-block;color:#fff;font-weight:800;font-size:14px;
+    border-radius:999px;padding:6px 14px;margin-top:12px}
+  .rows{margin-top:16px;border-top:1px solid var(--line)}
+  .row{display:flex;justify-content:space-between;align-items:center;gap:12px;
+    padding:13px 2px;border-bottom:1px solid var(--line)}
+  .row .k{font-size:14px;color:var(--muted)}
+  .row .v{font-size:17px;font-weight:700;text-align:right}
+  .sub{font-size:14px;font-weight:800;color:var(--pink);margin:20px 0 2px}
+  .foot{text-align:center;color:var(--muted);font-size:13px;margin-top:22px;line-height:1.7}
+  .addfriend{display:block;text-decoration:none;text-align:center;background:var(--orange);
+    color:#fff;border-radius:16px;padding:15px 16px;font-weight:800;font-size:17px;margin-bottom:14px;
+    box-shadow:0 6px 16px rgba(255,107,53,.3)}
+  .addfriend small{display:block;font-size:12px;font-weight:600;opacity:.92;margin-top:3px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="shop">玩豆豆手創館</div>
+    <div class="title">會員專區</div>
+    <div class="bar"></div>
+  </header>
+  <div id="app">
+    <div class="card center">
+      <div class="spin"></div>
+      <div class="hint">載入中…</div>
+    </div>
+  </div>
+  <div class="foot">資料有誤或要更新，歡迎到店櫃台告訴我們</div>
+</div>
+
+<script>
+const LIFF_ID = "2010667612-wIU12nmh";
+const API = "https://delueddcdjrgysmwmcrc.supabase.co/functions/v1/member";
+const OA_ADD_URL = "https://line.me/R/ti/p/@wandoudou"; // 官方帳號加好友連結
+const app = document.getElementById("app");
+
+// 若尚未加官方帳號好友（或曾封鎖），回傳一顆加好友按鈕的 HTML；已是好友回空字串
+async function friendBanner(){
+  try{
+    if(liff.isApiAvailable && !liff.isApiAvailable("getFriendship")) return "";
+    const fr = await liff.getFriendship();
+    if(fr && fr.friendFlag) return "";
+  }catch(e){}
+  return '<a class="addfriend" href="'+OA_ADD_URL+'">＋ 加入官方帳號好友'
+    +'<small>加好友才收得到活動、生日與到期通知</small></a>';
+}
+
+function esc(s){return String(s==null?"":s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]))}
+function card(inner){return '<div class="card">'+inner+'</div>'}
+
+async function api(payload){
+  const idToken = liff.getIDToken();
+  const r = await fetch(API,{method:"POST",headers:{"content-type":"application/json"},
+    body:JSON.stringify({...payload,idToken})});
+  return r.json();
+}
+
+function daysLeft(dstr){
+  if(!dstr) return null;
+  const exp=new Date(dstr+"T00:00:00"); const now=new Date();
+  now.setHours(0,0,0,0);
+  return Math.round((exp-now)/86400000);
+}
+function statusOf(d){
+  if(d==null) return {t:"—",c:"var(--muted)"};
+  if(d<0) return {t:"已過期",c:"var(--red)"};
+  if(d<=30) return {t:"即將到期",c:"var(--amber)"};
+  return {t:"有效會員",c:"var(--green)"};
+}
+function fmt(dstr){return dstr?dstr:"—"}
+
+function renderMember(m){
+  const d=daysLeft(m.expires_at); const st=statusOf(d);
+  let rows="";
+  const add=(k,v,color)=>{rows+='<div class="row"><span class="k">'+k+'</span><span class="v"'
+    +(color?' style="color:'+color+'"':'')+'>'+esc(v)+'</span></div>'};
+  add("會員年限", m.membership_term);
+  add("到期日", fmt(m.expires_at));
+  add("剩餘天數", d==null?"—":(d<0?("已過期 "+(-d)+" 天"):(d+" 天")), st.c);
+  if(m.birthday) add("生日", m.birthday);
+
+  let child="";
+  if(m.child_name){
+    let crows="";
+    const cadd=(k,v)=>{crows+='<div class="row"><span class="k">'+k+'</span><span class="v">'+esc(v)+'</span></div>'};
+    cadd("姓名", m.child_name);
+    if(m.child_gender) cadd("性別", m.child_gender);
+    if(m.child_birthday) cadd("生日", m.child_birthday);
+    child='<div class="sub">孩子資料</div><div class="rows">'+crows+'</div>';
+  }
+
+  app.innerHTML = card(
+    '<div class="name">'+esc(m.name)+'</div>'+
+    '<div class="mid">'+esc(m.member_id||"—")+'</div>'+
+    '<div class="badge" style="background:'+st.c+'">'+st.t+'</div>'+
+    '<div class="rows">'+rows+'</div>'+
+    child
+  );
+  // 沒加好友（或封鎖過）→ 卡片上方補一顆加好友按鈕
+  friendBanner().then(b=>{ if(b) app.insertAdjacentHTML("afterbegin", b); });
+}
+
+function renderBind(prefillErr){
+  app.innerHTML = card(
+    '<div style="font-size:18px;font-weight:800">綁定你的會員資料</div>'+
+    '<div class="hint">第一次使用，請輸入在店裡登記的<b>電話</b>和<b>姓名</b>，綁定後下次打開就直接看到，不用再輸入。</div>'+
+    (prefillErr?'<div class="err">'+esc(prefillErr)+'</div>':'')+
+    '<label>電話</label><input id="phone" type="tel" inputmode="numeric" placeholder="09 開頭 10 碼">'+
+    '<label>姓名</label><input id="name" type="text" placeholder="登記時填的姓名">'+
+    '<button class="primary" id="go">查詢我的會員資料</button>'
+  );
+  document.getElementById("go").onclick = doBind;
+}
+
+async function doBind(){
+  const phone=document.getElementById("phone").value.trim();
+  const name=document.getElementById("name").value.trim();
+  const btn=document.getElementById("go");
+  if(!phone||!name){renderBind("請輸入電話和姓名");return}
+  btn.disabled=true; btn.textContent="查詢中…";
+  try{
+    const res=await api({action:"bind",phone,name});
+    if(res.member) renderMember(res.member);
+    else renderBind(res.error||"查詢失敗，請再試一次");
+  }catch(e){ renderBind("連線失敗，請檢查網路後再試"); }
+}
+
+// QR 帶進來的一次性綁定碼（可能在網址、也可能被 LIFF 包在 liff.state 裡）
+function getToken(){
+  const p = new URLSearchParams(location.search);
+  if(p.get("token")) return p.get("token");
+  const st = p.get("liff.state");
+  if(st){
+    const q = new URLSearchParams(st.charAt(0)==="?"?st.slice(1):st);
+    if(q.get("token")) return q.get("token");
+  }
+  return null;
+}
+
+async function start(){
+  try{
+    await liff.init({liffId:LIFF_ID});
+    if(!liff.isLoggedIn()){ liff.login(); return; }
+
+    const token = getToken();
+    if(token){
+      const res = await api({action:"bind_token", token});
+      if(res.member){ renderMember(res.member); return; }
+      // 綁定碼有問題 → 退回一般查詢；查不到就顯示手動綁定並帶出原因
+      const back = await api({action:"lookup"});
+      if(back.bound && back.member) renderMember(back.member);
+      else renderBind(res.error);
+      return;
+    }
+
+    const res=await api({action:"lookup"});
+    if(res.bound && res.member) renderMember(res.member);
+    else renderBind();
+  }catch(e){
+    app.innerHTML = card('<div class="err">初始化失敗，請關掉重新從 LINE 打開。</div>');
+  }
+}
+start();
+</script>
+</body>
+</html>

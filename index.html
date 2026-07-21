@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>玩豆豆手創館 ｜ 拼豆手作．玩出創意</title>
+<meta name="description" content="玩豆豆手創館 WDD — 拼豆手作體驗、客製化作品、材料販售與會員集點。用一顆顆小豆豆，拼出屬於你的創意！" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%23FBD3E0'/%3E%3Ctext x='50' y='70' font-size='56' text-anchor='middle' fill='%23EF5A52' font-family='sans-serif' font-weight='bold'%3EW%3C/text%3E%3C/svg%3E" />
+<meta property="og:title" content="玩豆豆手創館 WDD" />
+<meta property="og:description" content="拼豆手作．玩出創意" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Mochiy+Pop+P+One&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+:root{
+  --red:#EF5A52; --blue:#46BEE8; --yellow:#F9C51E; --pink:#FBD3E0;
+  --pink-soft:#FDECF2; --brown:#6E5646; --cream:#FFFBF5; --ink:#4A3F38;
+  --orange:#FF6B35; --orange-dark:#D9501F;
+  --clay: inset -5px -5px 10px rgba(255,255,255,.65), inset 5px 5px 12px rgba(110,86,70,.14), 0 12px 24px rgba(74,63,56,.12);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--ink);background:var(--cream);line-height:1.8;-webkit-font-smoothing:antialiased}
+.round{font-family:'Mochiy Pop P One','Noto Sans TC',sans-serif}
+.wrap{max-width:1080px;margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+.btn{display:inline-block;padding:14px 30px;border-radius:999px;font-weight:700;font-size:17px;transition:.15s;cursor:pointer;border:none}
+.btn-primary{background:var(--orange);color:#fff;box-shadow:0 6px 0 var(--orange-dark)}
+.btn-primary:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--orange-dark)}
+.btn-ghost{background:#fff;color:var(--brown);box-shadow:0 6px 0 var(--pink)}
+.btn-ghost:hover{transform:translateY(2px);box-shadow:0 4px 0 var(--pink)}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,251,245,.92);backdrop-filter:blur(8px);border-bottom:2px solid var(--pink)}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:12px 24px;max-width:1080px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:12px}
+.brand svg{height:46px;width:auto}
+.brand b{font-size:22px}
+.brand .g1{color:var(--red)}.brand .g2{color:var(--blue)}.brand .g3{color:var(--yellow);-webkit-text-stroke:1px #c99a12}.brand .g4{color:var(--brown)}
+.menu{display:flex;gap:26px;font-weight:500}
+.menu a{padding:6px 2px;border-bottom:3px solid transparent;transition:.15s}
+.menu a:hover{border-color:var(--yellow);color:var(--red)}
+.nav-cta{display:none}
+
+/* hero */
+.hero{position:relative;text-align:center;padding:0 0 56px;background:radial-gradient(circle at 50% 20%,var(--pink-soft),var(--cream) 70%);overflow:hidden}
+.hero .banner{width:100%;height:auto;display:block}
+.hero h1{font-size:clamp(28px,6vw,44px);letter-spacing:1px;margin:26px 0 8px}
+.hero h1 .g1{color:var(--red)}.hero h1 .g2{color:var(--blue)}.hero h1 .g3{color:var(--yellow);-webkit-text-stroke:1.5px #c99a12}.hero h1 .g4{color:var(--brown)}
+.hero p.slogan{font-size:clamp(15px,2.6vw,19px);color:#8a7d73;margin-bottom:8px}
+.hero .btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin-top:24px}
+
+/* sections */
+section{padding:72px 0}
+.sec-head{text-align:center;margin-bottom:46px}
+.sec-head .kicker{color:var(--red);font-weight:700;letter-spacing:3px;font-size:14px}
+.sec-head h2{font-size:clamp(28px,5vw,40px);margin-top:6px;color:var(--ink)}
+.sec-head p{color:#8a7d73;margin-top:10px}
+
+.about{background:#fff}
+.about .grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+.about .art{background:var(--pink-soft);border-radius:28px;padding:34px;display:flex;flex-wrap:wrap;gap:14px;justify-content:center}
+.about .art .dot{width:44px;height:44px;border-radius:50%;box-shadow:inset -4px -4px 8px rgba(255,255,255,.7),inset 4px 4px 9px rgba(0,0,0,.12),0 6px 12px rgba(74,63,56,.1)}
+.about p{font-size:17px;color:#5c5049;margin-bottom:14px}
+
+.cards{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.card{background:#fff;border-radius:22px;padding:30px 22px;text-align:center;border:2px solid var(--pink);
+  box-shadow:0 8px 0 var(--pink-soft),0 16px 28px rgba(74,63,56,.1);transition:.18s}
+.card:hover{transform:translateY(-6px);box-shadow:0 4px 0 var(--pink-soft),0 20px 32px rgba(74,63,56,.16)}
+.card .ic{width:66px;height:66px;border-radius:50%;margin:0 auto 16px;display:grid;place-items:center;
+  box-shadow:inset -4px -4px 8px rgba(255,255,255,.7),inset 4px 4px 9px rgba(0,0,0,.06),0 6px 14px rgba(74,63,56,.12)}
+.card .ic svg{width:30px;height:30px}
+.card h3{font-size:20px;margin-bottom:8px}
+.card p{font-size:15px;color:#8a7d73}
+
+.member{background:linear-gradient(135deg,var(--pink),#fde3ec);text-align:center}
+.member .box{background:#fff;border-radius:30px;padding:48px 30px;max-width:760px;margin:0 auto;
+  box-shadow:var(--clay)}
+.member h2{font-size:clamp(26px,5vw,36px);margin-bottom:14px}
+.member ul{list-style:none;display:flex;flex-wrap:wrap;gap:14px 30px;justify-content:center;margin:22px 0 30px;color:var(--brown);font-weight:500}
+.member li::before{content:"●";color:var(--red);margin-right:8px;font-size:12px}
+
+.contact{background:#fff}
+.contact .grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:center}
+.info-row{display:flex;gap:14px;align-items:flex-start;margin-bottom:18px}
+.info-row .lab{min-width:96px;font-weight:700;color:var(--red)}
+.info-row a{color:var(--blue);font-weight:500;word-break:break-all}
+.contact .card-c{background:var(--pink-soft);border-radius:28px;padding:36px;text-align:center;box-shadow:var(--clay)}
+.contact .card-c .big{font-size:clamp(24px,4vw,30px);font-weight:700;margin-bottom:8px}
+.note{color:#b0a49a;font-size:13px;margin-top:8px}
+
+footer{background:var(--brown);color:#fff;text-align:center;padding:34px 24px;font-size:14px}
+footer .fbrand{display:flex;align-items:center;justify-content:center;gap:10px;font-size:20px;margin-bottom:8px}
+footer .fbrand svg{height:34px;width:auto}
+footer .fbrand .g1{color:#ff9a94}.footer .g2{color:#a6e2f5}
+
+@media(max-width:820px){
+  .menu{display:none}
+  .nav-cta{display:inline-block;padding:10px 20px;font-size:15px}
+  .about .grid,.contact .grid{grid-template-columns:1fr;gap:28px}
+  .cards{grid-template-columns:1fr 1fr}
+}
+@media(max-width:480px){ .cards{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand">
+      <svg viewBox="0 0 680 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="玩豆豆 WDD">
+        <defs><clipPath id="ov"><ellipse cx="340" cy="280" rx="248" ry="100"/></clipPath></defs>
+        <g transform="translate(0,-152)">
+          <ellipse cx="340" cy="280" rx="256" ry="108" fill="#fff"/>
+          <ellipse cx="340" cy="280" rx="248" ry="100" fill="#FBD3E0"/>
+          <g clip-path="url(#ov)">
+            <path d="M142,205 L182,352 L210,283 L238,352 L278,205" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M142,205 L182,352 L210,283 L238,352 L278,205" fill="none" stroke="#EF5A52" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M310,205 L310,352" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+            <path d="M310,208 C382,203 404,247 404,279 C404,311 382,355 310,350" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+            <path d="M310,205 L310,352" fill="none" stroke="#46BEE8" stroke-width="44" stroke-linecap="round"/>
+            <path d="M310,208 C382,203 404,247 404,279 C404,311 382,355 310,350" fill="none" stroke="#46BEE8" stroke-width="44" stroke-linecap="round"/>
+            <path d="M445,205 L445,352" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+            <path d="M445,208 C517,203 539,247 539,279 C539,311 517,355 445,350" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+            <path d="M445,205 L445,352" fill="none" stroke="#F9C51E" stroke-width="44" stroke-linecap="round"/>
+            <path d="M445,208 C517,203 539,247 539,279 C539,311 517,355 445,350" fill="none" stroke="#F9C51E" stroke-width="44" stroke-linecap="round"/>
+          </g>
+        </g>
+      </svg>
+      <b class="round"><span class="g1">玩</span><span class="g2">豆</span><span class="g3">豆</span><span class="g4">手創館</span></b>
+    </div>
+    <nav class="menu">
+      <a href="#about">關於我們</a>
+      <a href="#services">服務項目</a>
+      <a href="#member">會員專區</a>
+      <a href="#contact">聯絡我們</a>
+    </nav>
+    <a href="#contact" class="btn btn-primary nav-cta">聯絡</a>
+  </div>
+</header>
+
+<section class="hero">
+  <img class="banner" src="assets/banner.jpg" alt="玩豆豆手創館：拼豆摩天輪與拼豆盤插畫，拼豆　手作　親子的快樂時光">
+  <h1 class="round"><span class="g1">玩</span><span class="g2">豆</span><span class="g3">豆</span><span class="g4">手創館</span></h1>
+  <p class="slogan">用一顆顆小豆豆，拼出屬於你的創意</p>
+  <div class="btns">
+    <a href="#services" class="btn btn-primary">看看我們在玩什麼</a>
+  </div>
+</section>
+
+<section id="about" class="about">
+  <div class="wrap">
+    <div class="grid">
+      <div>
+        <div class="sec-head" style="text-align:left;margin-bottom:22px">
+          <span class="kicker">ABOUT US</span>
+          <h2>關於玩豆豆</h2>
+        </div>
+        <p>玩豆豆手創館是一個屬於大人和小孩的拼豆手作空間。從一顆顆繽紛的小豆豆開始，透過雙手排列、熨燙定型，就能把腦中的想像變成看得到、摸得到的作品。</p>
+        <p>不論是第一次接觸的新手，還是想做出獨一無二禮物的老朋友，我們都準備好各種顏色的豆豆、模板與工具，陪你一起慢慢玩、慢慢拼。</p>
+      </div>
+      <div class="art" aria-hidden="true">
+        <span class="dot" style="background:#EF5A52"></span><span class="dot" style="background:#46BEE8"></span>
+        <span class="dot" style="background:#F9C51E"></span><span class="dot" style="background:#EF5A52"></span>
+        <span class="dot" style="background:#46BEE8"></span><span class="dot" style="background:#F9C51E"></span>
+        <span class="dot" style="background:#F9C51E"></span><span class="dot" style="background:#EF5A52"></span>
+        <span class="dot" style="background:#46BEE8"></span><span class="dot" style="background:#F9C51E"></span>
+        <span class="dot" style="background:#EF5A52"></span><span class="dot" style="background:#46BEE8"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">WHAT WE OFFER</span>
+      <h2>服務項目</h2>
+      <p>從體驗到客製，都能在這裡找到樂趣</p>
+    </div>
+    <div class="cards">
+      <div class="card">
+        <div class="ic" style="background:#FDE3E1">
+          <svg viewBox="0 0 24 24"><circle cx="4" cy="12" r="4" fill="#EF5A52"/><circle cx="12" cy="12" r="4" fill="#46BEE8"/><circle cx="20" cy="12" r="4" fill="#F9C51E"/></svg>
+        </div>
+        <h3>拼豆體驗課</h3>
+        <p>現場老師教學，大人小孩都能輕鬆上手，做出第一件作品。</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:#E1F4FB">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#46BEE8" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="4" y="9" width="16" height="11" rx="1.5"/><line x1="4" y1="13.5" x2="20" y2="13.5"/>
+            <path d="M12 9v11M12 9c-1.4-3.2-5.3-3-5 .3.2 1.6 2.2 1.6 5-.3M12 9c1.4-3.2 5.3-3 5 .3-.2 1.6-2.2 1.6-5-.3"/>
+          </svg>
+        </div>
+        <h3>客製化作品</h3>
+        <p>姓名牌、鑰匙圈、擺飾，量身打造獨一無二的專屬禮物。</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:#FDF3D6">
+          <svg viewBox="0 0 24 24">
+            <circle cx="7" cy="7" r="2.1" fill="#EF5A52"/><circle cx="12" cy="7" r="2.1" fill="#F9C51E"/><circle cx="17" cy="7" r="2.1" fill="#46BEE8"/>
+            <circle cx="7" cy="12" r="2.1" fill="#46BEE8"/><circle cx="12" cy="12" r="2.1" fill="#EF5A52"/><circle cx="17" cy="12" r="2.1" fill="#F9C51E"/>
+            <circle cx="7" cy="17" r="2.1" fill="#F9C51E"/><circle cx="12" cy="17" r="2.1" fill="#46BEE8"/><circle cx="17" cy="17" r="2.1" fill="#EF5A52"/>
+          </svg>
+        </div>
+        <h3>材料 &amp; 豆豆販售</h3>
+        <p>各色拼豆、模板與工具一次補齊，在家也能盡情創作。</p>
+      </div>
+      <div class="card">
+        <div class="ic" style="background:#F5E6DE">
+          <svg viewBox="0 0 24 24" fill="#FF6B35"><path d="M12 2.5l2.7 6.3 6.8.6-5.2 4.6 1.6 6.7L12 17.6l-5.9 3.1 1.6-6.7-5.2-4.6 6.8-.6z"/></svg>
+        </div>
+        <h3>會員集點優惠</h3>
+        <p>加入會員累積來店紀錄，還有生日禮與專屬好康等你拿。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="member" class="member">
+  <div class="wrap">
+    <div class="box">
+      <div class="sec-head" style="margin-bottom:0">
+        <span class="kicker">MEMBERSHIP</span>
+        <h2>加入玩豆豆會員</h2>
+      </div>
+      <p>我們有專屬的會員系統，來店消費輕鬆累積紀錄，好禮自動送給你。</p>
+      <ul>
+        <li>來店紀錄自動累積</li>
+        <li>生日當月專屬優惠</li>
+        <li>新品 &amp; 課程優先通知</li>
+        <li>會員專屬折扣</li>
+      </ul>
+      <p style="color:var(--brown);font-weight:500;margin:4px 0 22px">會員請至門市現場申辦，暫不開放線上加入</p>
+      <a href="https://line.me/R/ti/p/@wandoudou" target="_blank" rel="noopener" class="btn btn-primary">加 LINE 好友，掌握最新消息</a>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="kicker">CONTACT</span>
+      <h2>聯絡我們</h2>
+      <p>想預約課程、客製作品或加入會員，都歡迎與我們聯繫</p>
+    </div>
+    <div class="grid">
+      <div>
+        <div class="info-row"><span class="lab">負責人</span><span>楊承翰</span></div>
+        <div class="info-row"><span class="lab">電子郵件</span><a href="mailto:aa0970322920@gmail.com">aa0970322920@gmail.com</a></div>
+        <div class="info-row"><span class="lab">營業時間</span><span>（請填入，例：週二～週日 11:00–20:00）</span></div>
+        <div class="info-row"><span class="lab">店址</span><span>（請填入店家地址）</span></div>
+        <div class="info-row"><span class="lab">電話</span><a href="tel:0970322920">0970-322-920</a></div>
+        <p class="note">＊括號內為可自行修改的欄位，開檔用記事本即可編輯。</p>
+      </div>
+      <div class="card-c">
+        <div class="big round">一起來玩豆豆吧！</div>
+        <p style="color:#8a7d73;margin-bottom:22px">寄封信給我們，聊聊你的手作點子</p>
+        <a href="mailto:aa0970322920@gmail.com?subject=玩豆豆手創館 洽詢" class="btn btn-primary">寄信給我們</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fbrand round">
+    <svg viewBox="0 0 680 252" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="WDD">
+      <defs><clipPath id="ovf"><ellipse cx="340" cy="280" rx="248" ry="100"/></clipPath></defs>
+      <g transform="translate(0,-152)">
+        <ellipse cx="340" cy="280" rx="256" ry="108" fill="#fff"/>
+        <ellipse cx="340" cy="280" rx="248" ry="100" fill="#FBD3E0"/>
+        <g clip-path="url(#ovf)">
+          <path d="M142,205 L182,352 L210,283 L238,352 L278,205" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M142,205 L182,352 L210,283 L238,352 L278,205" fill="none" stroke="#EF5A52" stroke-width="44" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M310,205 L310,352" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+          <path d="M310,208 C382,203 404,247 404,279 C404,311 382,355 310,350" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+          <path d="M310,205 L310,352" fill="none" stroke="#46BEE8" stroke-width="44" stroke-linecap="round"/>
+          <path d="M310,208 C382,203 404,247 404,279 C404,311 382,355 310,350" fill="none" stroke="#46BEE8" stroke-width="44" stroke-linecap="round"/>
+          <path d="M445,205 L445,352" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+          <path d="M445,208 C517,203 539,247 539,279 C539,311 517,355 445,350" fill="none" stroke="#fff" stroke-width="48" stroke-linecap="round"/>
+          <path d="M445,205 L445,352" fill="none" stroke="#F9C51E" stroke-width="44" stroke-linecap="round"/>
+          <path d="M445,208 C517,203 539,247 539,279 C539,311 517,355 445,350" fill="none" stroke="#F9C51E" stroke-width="44" stroke-linecap="round"/>
+        </g>
+      </g>
+    </svg>
+    <span class="g1">玩豆豆手創館</span>　WDD
+  </div>
+  <div>負責人：楊承翰　|　aa0970322920@gmail.com</div>
+  <div style="opacity:.7;margin-top:8px">© 2026 玩豆豆手創館 WDD．拼豆手作．玩出創意</div>
+</footer>
+
+</body>
+</html>
